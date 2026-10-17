@@ -1,129 +1,191 @@
 # Balsas Experience API
 
-## 1. Sobre o projeto
+## 1. Nome e descrição do projeto
 
 A Balsas Experience API é uma API REST desenvolvida como projeto acadêmico do curso de Análise e Desenvolvimento de Sistemas. Seu objetivo é disponibilizar informações sobre atrações turísticas do município de Balsas, no Maranhão.
+A aplicação permite cadastrar, listar, consultar, atualizar e excluir atrações turísticas por meio de requisições HTTP, utilizando um banco de dados PostgreSQL para armazenar as informações.
 
-A aplicação permite cadastrar, listar, consultar, atualizar e excluir atrações turísticas.
+## 2. Equipe
 
-## 2. Tecnologias utilizadas
+Projeto desenvolvido individualmente por:
 
-* Node.js
-* Express
-* PostgreSQL
-* Prisma ORM
-* JavaScript
-* Thunder Client para testes das requisições HTTP
+- **Priscila Ferreira Dias Santos** — desenvolvimento da API, implementação dos endpoints, integração com o banco de dados, testes e publicação da aplicação.
 
-## 3. Funcionalidades
+## 3. Tecnologias utilizadas
 
-* Listar todas as atrações turísticas.
-* Consultar uma atração pelo ID.
-* Cadastrar uma nova atração.
-* Atualizar os dados de uma atração.
-* Excluir uma atração.
-* Validar os dados enviados nas requisições.
-* Retornar códigos HTTP de sucesso e de erro.
+- **Node.js:** ambiente de execução JavaScript.
+- **Express:** framework utilizado para criar o servidor e gerenciar as rotas.
+- **JavaScript:** linguagem utilizada no desenvolvimento.
+- **PostgreSQL:** banco de dados relacional.
+- **Prisma ORM:** ferramenta utilizada para acessar e manipular os dados do banco.
+- **Thunder Client:** ferramenta utilizada para testar as requisições HTTP.
+- **Git e GitHub:** controle de versão e hospedagem do código-fonte.
+- **Render:** plataforma utilizada para publicar a API.
+- **Neon:** serviço utilizado para hospedar o banco de dados PostgreSQL.
 
-## 4. Modelo de dados
+## 4. Pré-requisitos
 
-A entidade `Atracao` possui os seguintes campos:
+Para executar o projeto localmente, é necessário ter:
+- Node.js e npm instalados.
+- Git instalado para clonar o repositório.
+- Um banco de dados PostgreSQL disponível.
+- As credenciais de conexão com o banco de dados.
 
-| Campo     | Tipo            | Descrição                  |
-| --------- | --------------- | -------------------------- |
-| id        | Int             | Identificador único        |
-| nome      | String          | Nome da atração            |
-| descricao | String          | Descrição da atração       |
-| endereco  | String          | Endereço ou localização    |
-| categoria | String          | Categoria da atração       |
-| horario   | String opcional | Horário de funcionamento   |
-| preco     | String opcional | Informação sobre preço     |
-| createdAt | DateTime        | Data de criação            |
-| updatedAt | DateTime        | Data da última atualização |
+## 5. Como instalar e configurar
 
-## 5. Endpoints
+### 5.1. Clonar o repositório
 
-| Método | Endpoint        | Descrição                    | Resposta esperada |
-| ------ | --------------- | ---------------------------- | ----------------- |
-| GET    | `/`             | Apresenta informações da API | 200 OK            |
-| GET    | `/atracoes`     | Lista as atrações            | 200 OK            |
-| GET    | `/atracoes/:id` | Consulta uma atração pelo ID | 200 OK            |
-| POST   | `/atracoes`     | Cadastra uma atração         | 201 Created       |
-| PUT    | `/atracoes/:id` | Atualiza uma atração         | 200 OK            |
-| DELETE | `/atracoes/:id` | Exclui uma atração           | 204 No Content    |
+Execute os comandos no terminal:
 
-Quando uma atração não é encontrada, a API retorna `404 Not Found`.
-
-## 6. Como executar o projeto
-
-### Pré-requisitos
-
-* Node.js instalado.
-* PostgreSQL instalado e em execução.
-* Banco de dados PostgreSQL criado.
-* Git instalado, caso deseje clonar o repositório.
-
-### Instalação
-
-Clone o repositório ou abra a pasta do projeto e instale as dependências:
+```bash
+git clone https://github.com/prisciladias22/balsas-experience-api.git
+cd balsas-experience-api
+```
+### 5.2. Instalar as dependências
 
 ```bash
 npm install
 ```
+### 5.3. Configurar a variável DATABASE_URL
 
-Configure o arquivo `.env` na raiz do projeto com a variável `DATABASE_URL`, apontando para o banco PostgreSQL.
+Crie um arquivo `.env` na raiz do projeto e configure a variável `DATABASE_URL` com os dados de conexão do PostgreSQL.
 
-Exemplo de formato:
+Exemplo de configuração, sem credenciais reais:
 
 ```env
 DATABASE_URL="postgresql://USUARIO:SENHA@localhost:5432/balsas_experience?schema=public"
 ```
 
-Substitua `USUARIO` e `SENHA` pelas credenciais locais do PostgreSQL. Não publique suas credenciais.
+**Observação:** Substitua `USUARIO`, `SENHA` e os demais parâmetros pelos dados correspondentes ao seu banco de dados.
 
-Aplique as migrações do banco:
+## 6. Como executar as migrações, popular o banco e iniciar o servidor
+
+### 6.1. Executar as migrações
+
+Para aplicar as migrações existentes no banco de dados, execute:
 
 ```bash
 npx prisma migrate deploy
 ```
-
-Gere o Prisma Client:
+### 6.2. Gerar o Prisma Client
 
 ```bash
 npx prisma generate
 ```
+### 6.3. Popular o banco de dados
 
-Inicie a aplicação:
+Se o projeto possuir uma rotina de seed configurada, execute:
+
+```bash
+npx prisma db seed
+```
+Caso não exista uma rotina de seed, cadastre as atrações por meio do endpoint `POST /atracoes`.
+
+### 6.4. Iniciar o servidor
+
+Se o arquivo `package.json` possuir o script `start`, execute:
 
 ```bash
 npm start
 ```
+Utilize o comando definido nos scripts do projeto. Caso a aplicação esteja configurada para utilizar a porta 3000, poderá ser acessada localmente pelo endereço:
 
-Por padrão, a API ficará disponível em `http://localhost:3000`.
+```text
+http://localhost:3000
+```
 
-## 7. Testes
+## 7. Lista de endpoints e exemplos de requisição
 
-As requisições foram testadas com o Thunder Client, incluindo:
+A API disponibiliza os seguintes endpoints para gerenciar as atrações turísticas.
 
-* Listagem de atrações.
-* Cadastro de atração.
-* Consulta por ID.
-* Atualização de dados.
-* Exclusão de atração.
-* Consulta de ID inexistente.
+| Método HTTP | Endpoint | Descrição | Status esperado |
+|---|---|---|---|
+| GET | `/` | Verifica o funcionamento da API. | `200 OK` |
+| GET | `/atracoes` | Lista todas as atrações cadastradas. | `200 OK` |
+| GET | `/atracoes/:id` | Consulta uma atração pelo ID. | `200 OK` ou `404 Not Found` |
+| POST | `/atracoes` | Cadastra uma nova atração. | `201 Created` |
+| PUT | `/atracoes/:id` | Atualiza uma atração existente. | `200 OK` ou `404 Not Found` |
+| DELETE | `/atracoes/:id` | Exclui uma atração pelo ID. | `204 No Content` ou `404 Not Found` |
 
-Os resultados observados nos testes locais incluíram os códigos HTTP `200`, `201`, `204` e `404`.
+### 7.1. Listar atrações
 
-## 8. Observações
+Requisição:
 
-A aplicação utiliza PostgreSQL para armazenar os dados e Prisma ORM para realizar as operações no banco de dados.
+```http
+GET http://localhost:3000/atracoes
+```
+Essa operação retorna a lista de atrações cadastradas no banco de dados.
 
-A publicação em um serviço de hospedagem e o endereço da API serão adicionados após a implantação.
+### 7.2. Consultar uma atração pelo ID
 
-## 9. Autor
+Requisição:
 
-Projeto acadêmico desenvolvido individualmente.
+```http
+GET http://localhost:3000/atracoes/1
+```
+O identificador `1` é apenas um exemplo. Se a atração não existir, a API deverá retornar `404 Not Found`, conforme a implementação.
 
-**Estudante:** Priscila Ferreira Dias Santos
-**Curso:** Análise e Desenvolvimento de Sistemas
-**Instituição:** Centro Universitário de Balsas
+### 7.3. Cadastrar uma atração
+
+Requisição:
+
+```http
+POST http://localhost:3000/atracoes
+Content-Type: application/json
+```
+
+Corpo da requisição:
+
+```json
+{
+  "nome": "Praça da Matriz",
+  "descricao": "Espaço público de convivência e lazer.",
+  "endereco": "Centro, Balsas - MA",
+  "categoria": "Praça",
+  "horario": "Livre",
+  "preco": "Gratuito"
+}
+```
+Em caso de sucesso, a API deverá retornar `201 Created`, acompanhado dos dados da atração cadastrada, conforme a resposta implementada.
+
+### 7.4. Atualizar uma atração
+
+Requisição:
+
+```http
+PUT http://localhost:3000/atracoes/1
+Content-Type: application/json
+```
+Corpo da requisição:
+
+```json
+{
+  "nome": "Praça da Matriz",
+  "descricao": "Espaço de convivência e lazer.",
+  "endereco": "Centro, Balsas - MA",
+  "categoria": "Praça",
+  "horario": "Livre",
+  "preco": "Gratuito"
+}
+```
+Essa operação atualiza os dados da atração identificada pelo ID informado.
+
+### 7.5. Excluir uma atração
+
+Requisição:
+
+```http
+DELETE http://localhost:3000/atracoes/1
+```
+
+Quando a exclusão for realizada com sucesso, o status esperado é `204 No Content`.
+
+Os exemplos utilizam dados ilustrativos. Os campos, as respostas e os códigos HTTP devem corresponder ao comportamento efetivamente implementado na API.
+
+## 8. Link da API publicada
+
+A aplicação está publicada na plataforma Render, e o banco de dados PostgreSQL utiliza o serviço Neon.
+
+- **API publicada:** https://balsas-experience-api.onrender.com/
+- **Listagem de atrações:** https://balsas-experience-api.onrender.com/atracoes
+- **Repositório GitHub:** https://github.com/prisciladias22/balsas-experience-api
